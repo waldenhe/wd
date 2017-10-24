@@ -1,0 +1,178 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+    	<div class="row row-lg">
+	        <div class="col-sm-12">
+	            <div class="row">
+	            	<div class="col-sm-2">
+			    	<input id="cardId" name="身份证号" type="hidden"/>
+			    	</div>
+			    	<div class="col-sm-2">
+			    	<#button name="开始" icon="fa-plus" clickFun="start()" space="true"/>
+			    	</div>
+			    	<div class="col-sm-5">
+			    		<#NameCon name="连刷间隔(秒)" id="time" value="1" placeholder="默认1秒钟"/>
+			    	</div>
+			    	<div class="col-sm-2">
+			    	<#button name="设置" icon="fa-plus" clickFun="setting()" space="true"/>
+			    	</div>
+				</div>
+			</div>
+			<div class="col-sm-12">
+				<div class="row">
+					
+    			</div>
+			</div>
+		</div>
+        <script type="text/javascript">
+		var flag = false;
+		var time = 1*1000;
+		function setting(){
+			var _time = $("#time").val();
+			if(!isNaN(_time)){
+				time=_time*1000;
+				//tips层-上
+				layer.tips('设置成功', '#time', {
+				  tips: [1, '#0FA6D8'] //还可配置颜色
+				});
+			}
+		}
+		
+        function toJson(str) {
+            return eval('(' + str + ')');
+
+        }
+        function connect() {
+        	//避免卡机
+        	flag = false;
+            try{
+            	CertCtl.connect();
+            	var resultObj = toJson(getStatus());
+            	if(0==resultObj.status){
+            		flag = true;
+            	}else{
+                	layer.alert("端口无法打开,请确认是否安装驱动并插入USB读卡器",{icon:2});
+                	flag = false;
+                	layer.close(this.layerIndex);
+            	}
+            }catch(e){
+            	console.log(e);
+            	layer.alert("端口无法打开,请确认是否安装驱动并插入USB读卡器",{icon:2});
+            	flag = false;
+            	layer.close(this.layerIndex);
+            }
+        }
+        function disconnect() {
+            CertCtl.disconnect();
+        }
+
+        function getStatus() {
+           return  CertCtl.getStatus();
+        }
+        
+        function start(){
+        	//自定页
+        	var index = layer.open({
+        	  type: 1,
+        	  skin: 'layui-layer-demo', //样式类名
+        	  closeBtn: 0, //不显示关闭按钮
+        	  anim: 2,
+        	  area: ['100%', '90%'],
+        	  title:false,
+        	  shadeClose: true, //开启遮罩关闭
+        	  content: '<div style="overflow:hidden"><div id="fail_div" class="container alert alert-danger" style="margin-bottom:0;overflow:hidden;width:100%;height:100%"><div class="row clearfix"><div class="col-md-12 column"><div class="text-center" style="padding:106px 23px"><img alt="140x140" src="/static/img/record/error.png" class="img-circle"><span style="padding:50px 23px;font-size:50px" id="fail">刷卡失败，请重新刷卡</span></div></div></div></div><div id="success_div" class="container alert alert-success" style="margin-bottom:0;overflow:hidden;width:100%;height:100%"><div class="row clearfix"><div class="col-md-8 column"><div class="text-center" style="padding:106px 23px"><img alt="140x140" src="/static/img/record/success.png" class="img-circle"><span style="padding:50px 23px;font-size:50px" id="success">刷卡成功,已刷20次</span></div></div><div class="col-md-4 column"><form class="form-horizontal" role="form" style="padding-top:40px"><div class="form-group"><div class="col-sm-12"><p class="form-control-static" id="other11"><img alt="头像" src="" id="pic" class="img-rounded"></p></div></div><div class="form-group"><label class="col-sm-3 control-label">教师姓名:</label><div class="col-sm-8"><p class="form-control-static" id="teachername">刘冬</p></div></div><div class="form-group"><label class="col-sm-3 control-label">教师部门:</label><div class="col-sm-8"><p class="form-control-static" id="department">资环系</p></div></div><div class="form-group"><label class="col-sm-3 control-label">教师职位:</label><div class="col-sm-8"><p class="form-control-static" id="duty">教师</p></div></div></form></div></div></div></div>',
+        	  success:function(layer,index){
+        		  flag =true; 
+        		  readCert();
+        	  },
+        	  end:function(layer,index){
+        		  stop();
+        	  }
+        	});
+        	layer.style(index, {
+        		  background: '#d9edf7'
+        	});
+        	this.layerIndex = index;
+        	
+        }
+        
+        window.onkeydown = function(e){
+        	 if(e.keyCode === 27){
+        	  	layer.close(this.layerIndex);
+        	 }
+        };
+		
+        function stop(){
+        	flag = false;
+        }
+        
+        var success = '<img src="/static/img/record/success.png" class="" alt="Responsive image">'
+        
+        var fail = '<img src="/static/img/record/error.png" class="" alt="Responsive image">'
+        
+        function writeSuccess(data){
+        	$("#success").text(data.message)
+        	$("#department").text(data.department)
+        	$("#duty").text(data.duty)
+        	$("#teachername").text(data.teachername)
+        	$("#fail_div").hide();
+        	$("#success_div").show();
+        }
+        
+        function writeFail(text){
+        	$("#fail").text(text)
+        	$("#fail_div").show();
+        	$("#success_div").hide();
+        }
+        
+        function readCert() {
+        	if(flag){
+        		connect();
+                var startDt = new Date();
+                var result = CertCtl.readCert();
+                var resultObj = toJson(result);
+                
+                if (resultObj.resultFlag == 0) {
+                	$("#cardId").val(resultObj.resultContent.certNumber);
+                	RecordInfoDlg.clearData();
+                	RecordInfoDlg.collectData();
+                	//提交信息
+                    var ajax = new $ax(Feng.ctxPath + "/school/record/add", function(data){
+                    	document.getElementById("pic").src="data:image/jpeg;base64," + CertCtl.GetJPGPhotobuf();
+                    	
+                    	
+                    	writeSuccess(data);
+                        disconnect();
+                      	//再次刷卡
+                        setTimeout(readCert,time);
+                    },function(data){
+                    	writeFail(data.responseJSON.message);
+                        disconnect();
+                      	//再次刷卡
+                        setTimeout(readCert,time);
+                    });
+                	ajax.async = true;
+                    ajax.set(RecordInfoDlg.recordInfoData);
+                    ajax.start();
+                }else{
+                	writeFail(resultObj.errorMsg);
+                	disconnect();
+                  	//再次刷卡
+                    setTimeout(readCert,500);
+                }
+        	}
+        }
+
+    </script>
+
+
+    <object id="CertCtl" name="CertCtl" type="application/cert-reader" width="0" height="0">
+
+       	 该浏览器不支持身份证阅读器控件！
+
+    </object>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/school/record/record_info.js"></script>
+@}

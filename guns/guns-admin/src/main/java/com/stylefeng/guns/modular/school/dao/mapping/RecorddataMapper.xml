@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stylefeng.guns.modular.school.dao.RecorddataMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.stylefeng.guns.common.persistence.model.Recorddata">
+		<id column="id" property="id" />
+		<result column="cardId" property="cardId" />
+		<result column="createTime" property="createTime" />
+		<result column="other1" property="other1" />
+		<result column="other2" property="other2" />
+	</resultMap>
+	
+	
+	<select id="selectPageByMy"  resultMap="BaseResultMap"  >
+		SELECT * FROM recorddata t1 LEFT JOIN canteen t2 ON t1.`other2` = t2.`macaddr` INNER JOIN teacherdata t3 ON t1.`cardId` = t3.`cardId`
+		<where>
+		${ew.sqlSegment}
+		</where>
+	</select>
+	
+</mapper>

@@ -1,0 +1,57 @@
+@layout("/common/_container.html"){
+<div class="row">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>打卡记录管理</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <#TimeCon id="startTime" name="开始时间" isTime="true" pattern="YYYY-MM-DD hh:mm:ss" />
+                            </div>
+                            <div class="col-sm-2">
+                                <#TimeCon id="endTime" name="结束时间" isTime="true" pattern="YYYY-MM-DD hh:mm:ss" />
+                            </div>
+                            <div class="col-sm-3">
+                                <#NameCon id="cardId" name="身份证号" />
+                            </div>
+                            <div class="col-sm-2">
+                            	<#SelectCon id="mac" name="所在食堂" >
+                            		<option value="">---请选择---</option>
+								</#SelectCon>
+                            </div>
+                            <div class="col-sm-2">
+                            	<#SelectCon id="idType" name="类型" >
+                            		<option value="">---请选择---</option>
+                            		<option value="1">普通职工</option>
+                            		<option value="-1">特殊职工</option>
+                            		<option value="2">临时职工</option>
+								</#SelectCon>
+                            </div>
+                            <div class="col-sm-1">
+                                <#button name="搜索" icon="fa-search" clickFun="Record.search()"/>
+                            </div>
+                        </div>
+                        <div class="hidden-xs" id="RecordTableToolbar" role="group">
+                            @if(shiro.hasPermission("/record/add")){
+                                <#button name="添加" icon="fa-plus" clickFun="Record.openAddRecord()"/>
+                            @}
+                            @if(shiro.hasPermission("/record/update")){
+                                <#button name="开始打卡" icon="fa-plus" clickFun="Record.startRecord()" space="true"/>
+                            @}
+                            @if(shiro.hasPermission("/record/delete")){
+                                <#button name="删除" icon="fa-plus" clickFun="Record.delete()" space="true"/>
+                            @}
+                        </div>
+                        <#table id="RecordTable"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/school/record/record.js"></script>
+@}

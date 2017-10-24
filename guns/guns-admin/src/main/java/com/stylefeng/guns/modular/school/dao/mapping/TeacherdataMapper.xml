@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stylefeng.guns.modular.school.dao.TeacherdataMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.stylefeng.guns.common.persistence.model.Teacherdata">
+		<id column="id" property="id" />
+		<result column="cardId" property="cardId" />
+		<result column="teachernum" property="teachernum" />
+		<result column="teachername" property="teachername" />
+		<result column="department" property="department" />
+		<result column="duty" property="duty" />
+		<result column="sex" property="sex" />
+		<result column="idType" property="idType" />
+		<result column="other1" property="other1" />
+		<result column="other2" property="other2" />
+		<result column="other3" property="other3" />
+		<result column="other4" property="other4" />
+		<result column="other5" property="other5" />
+		<result column="other6" property="other6" />
+		<result column="other7" property="other7" />
+		<result column="other8" property="other8" />
+		<result column="other9" property="other9" />
+		<result column="other10" property="other10" />
+		<result column="other11" property="other11" />
+	</resultMap>
+
+</mapper>

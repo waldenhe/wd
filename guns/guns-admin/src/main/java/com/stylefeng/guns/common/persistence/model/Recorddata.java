@@ -35,7 +35,29 @@ public class Recorddata extends Model<Recorddata> {
 	
 	private Integer other1;
 	
-	/**
+	private String name;
+	
+	private String teachername;
+	
+	
+	
+	public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getTeachername() {
+        return teachername;
+    }
+
+    public void setTeachername(String teachername) {
+        this.teachername = teachername;
+    }
+
+    /**
 	 * 所在食堂MAC
 	 */
 	private String other2;
@@ -87,13 +109,8 @@ public class Recorddata extends Model<Recorddata> {
 	}
 
 	@Override
-	public String toString() {
-		return "Recorddata{" +
-			"id=" + id +
-			", cardId=" + cardId +
-			", createTime=" + createTime +
-			", other1=" + other1 +
-			", other2=" + other2 +
-			"}";
-	}
+    public String toString() {
+        return "Recorddata [id=" + id + ", cardId=" + cardId + ", createTime=" + createTime + ", other1=" + other1 + ", name="
+                + name + ", teachername=" + teachername + ", other2=" + other2 + "]";
+    }
 }

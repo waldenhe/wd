@@ -43,10 +43,10 @@ Canteen.openAddCanteen = function () {
     var index = layer.open({
         type: 2,
         title: '添加食堂信息',
-        area: ['800px', '420px'], //宽高
+        area: ['800px', '520px'], //宽高
         fix: false, //不固定
         maxmin: true,
-        content: Feng.ctxPath + '/canteen/canteen_add'
+        content: Feng.ctxPath + '/school/canteen/canteen_add'
     });
     this.layerIndex = index;
 };
@@ -59,10 +59,10 @@ Canteen.openCanteenDetail = function () {
         var index = layer.open({
             type: 2,
             title: '食堂信息详情',
-            area: ['800px', '420px'], //宽高
+            area: ['800px', '520px'], //宽高
             fix: false, //不固定
             maxmin: true,
-            content: Feng.ctxPath + '/canteen/canteen_update/' + Canteen.seItem.id
+            content: Feng.ctxPath + '/school/canteen/canteen_update/' + Canteen.seItem.id
         });
         this.layerIndex = index;
     }
@@ -73,7 +73,7 @@ Canteen.openCanteenDetail = function () {
  */
 Canteen.delete = function () {
     if (this.check()) {
-        var ajax = new $ax(Feng.ctxPath + "/canteen/delete", function (data) {
+        var ajax = new $ax(Feng.ctxPath + "/school/canteen/delete", function (data) {
             Feng.success("删除成功!");
             Canteen.table.refresh();
         }, function (data) {

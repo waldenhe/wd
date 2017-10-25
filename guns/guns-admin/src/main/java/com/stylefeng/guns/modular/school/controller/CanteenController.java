@@ -1,21 +1,27 @@
 package com.stylefeng.guns.modular.school.controller;
 
-import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.baomidou.mybatisplus.mapper.Wrapper;
-import com.baomidou.mybatisplus.plugins.Page;
-import com.stylefeng.guns.common.constant.factory.PageFactory;
-import com.stylefeng.guns.common.persistence.model.Canteen;
-import com.stylefeng.guns.core.base.controller.BaseController;
-import com.stylefeng.guns.modular.school.service.ICanteenService;
+import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
+
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.Page;
+import com.stylefeng.guns.common.constant.factory.PageFactory;
+import com.stylefeng.guns.common.exception.BizExceptionEnum;
+import com.stylefeng.guns.common.exception.BussinessException;
+import com.stylefeng.guns.common.persistence.model.Canteen;
+import com.stylefeng.guns.core.base.controller.BaseController;
+import com.stylefeng.guns.core.util.DateUtil;
+import com.stylefeng.guns.modular.school.service.ICanteenService;
 
 /**
  * 食堂信息控制器
@@ -52,6 +58,8 @@ public class CanteenController extends BaseController {
 	 */
 	@RequestMapping("/canteen_update/{canteenId}")
 	public String canteenUpdate(@PathVariable Integer canteenId, Model model) {
+	    Canteen canteen = canteenService.selectById(canteenId);
+        model.addAttribute("canteen", canteen);
 		return PREFIX + "canteen_edit.html";
 	}
 
@@ -88,7 +96,12 @@ public class CanteenController extends BaseController {
 	 */
 	@RequestMapping(value = "/add")
 	@ResponseBody
-	public Object add() {
+	public Object add(@Valid Canteen canteen,BindingResult result) {
+	    if (result.hasErrors()) {
+            throw new BussinessException(BizExceptionEnum.REQUEST_NULL);
+        }
+	    canteen.setCreatetime(DateUtil.getTime());
+	    canteenService.insert(canteen);
 		return super.SUCCESS_TIP;
 	}
 
@@ -106,7 +119,11 @@ public class CanteenController extends BaseController {
 	 */
 	@RequestMapping(value = "/update")
 	@ResponseBody
-	public Object update() {
+	public Object update(@Valid Canteen canteen, BindingResult result) {
+	    if (result.hasErrors()) {
+            throw new BussinessException(BizExceptionEnum.REQUEST_NULL);
+        }
+	    canteenService.updateById(canteen);
 		return super.SUCCESS_TIP;
 	}
 

@@ -77,7 +77,6 @@ public class RecordController extends BaseController {
                 wrapper.gt("t3.idType", 1);
             }
         }
-        System.out.println(wrapper.getSqlSegment());
         recordService.selectPageByMy(page, wrapper);
         return super.packForBT(page);
     }

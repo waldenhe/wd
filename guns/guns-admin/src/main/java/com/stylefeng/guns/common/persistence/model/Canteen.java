@@ -2,6 +2,8 @@ package com.stylefeng.guns.common.persistence.model;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotNull;
+
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.enums.IdType;
@@ -26,10 +28,12 @@ public class Canteen extends Model<Canteen> {
     /**
      * 食堂名称
      */
+	@NotNull(message="食堂名称不能为空")
 	private String name;
     /**
      * 食堂主机mac地址
      */
+	@NotNull(message="食堂mac地址不能为空")
 	private String macaddr;
     /**
      * 添加时间
@@ -38,6 +42,7 @@ public class Canteen extends Model<Canteen> {
     /**
      * 食堂地址
      */
+	@NotNull(message="食堂地址不能为空")
 	private String addr;
 
 

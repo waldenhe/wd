@@ -15,7 +15,9 @@ Record.initColumn = function () {
     return [
         {field: 'selectItem', radio: true},
         {title: 'id', field: 'id', visible: false, align: 'center', valign: 'middle'},
+        {title: '姓名', field: 'teachername', align: 'center', valign: 'middle'},
         {title: '身份证号', field: 'cardId', align: 'center', valign: 'middle'},
+        {title: '食堂名称', field: 'name',align: 'center', valign: 'middle'},
         {title: '刷卡日期', field: 'createTime',align: 'center', valign: 'middle'}
     ];
 };

@@ -44,7 +44,7 @@ CanteenInfoDlg.close = function() {
  * 收集数据
  */
 CanteenInfoDlg.collectData = function() {
-    this.set('id');
+    this.set('id').set('name').set('macaddr').set('createtime').set('addr');
 }
 
 /**
@@ -56,7 +56,7 @@ CanteenInfoDlg.addSubmit = function() {
     this.collectData();
 
     //提交信息
-    var ajax = new $ax(Feng.ctxPath + "school/canteen/add", function(data){
+    var ajax = new $ax(Feng.ctxPath + "/school/canteen/add", function(data){
         Feng.success("添加成功!");
         window.parent.Canteen.table.refresh();
         CanteenInfoDlg.close();
@@ -76,7 +76,7 @@ CanteenInfoDlg.editSubmit = function() {
     this.collectData();
 
     //提交信息
-    var ajax = new $ax(Feng.ctxPath + "school/canteen/update", function(data){
+    var ajax = new $ax(Feng.ctxPath + "/school/canteen/update", function(data){
         Feng.success("修改成功!");
         window.parent.Canteen.table.refresh();
         CanteenInfoDlg.close();

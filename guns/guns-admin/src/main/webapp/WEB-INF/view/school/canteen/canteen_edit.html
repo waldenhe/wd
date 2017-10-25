@@ -6,16 +6,15 @@
             <input type="hidden" id="id" value="${canteen.id}">
 
             <div class="row">
-                <div class="col-sm-6 b-r">
-
-                </div>
-
-                <div class="col-sm-6">
-
+                <div class="col-sm-12">
+					<#input id="name" name="食堂名称" underline="true"  value="${canteen.name}"/>
+					<#input id="createtime" name="创建时间" underline="true"   value="${canteen.createtime}"  readonly="true"/>
+					<#input id="addr" name="食堂地址" underline="true"  value="${canteen.addr}"/>
+					<#input id="macaddr" name="食堂MAC地址"    value="${canteen.macaddr}"  readonly="true"/>
                 </div>
             </div>
 
-            <div class="row btn-group-m-t">
+            <div class="row btn-group-m-t text-center">
                 <div class="col-sm-10">
                     <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="CanteenInfoDlg.editSubmit()"/>
                     <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="CanteenInfoDlg.close()"/>
